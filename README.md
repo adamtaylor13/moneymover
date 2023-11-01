@@ -15,7 +15,9 @@ Currently it only adds a few key-bindings:
 
 - "n": Go to the "Next" month
 - "p": Go to the "Previous" month
+- "r": Click "Review Transactions" button
 - "t": Go to "this" month
+- "/": Focus and select the "Quick Filter" input
 
 At this point, all the keybindings are loosely based on Google Calendar's navigation keys.
 These keys should only trigger if the user is not focused on an input element.

@@ -29,6 +29,13 @@ document.addEventListener("keydown", function (event) {
       element?.click();
       break;
     }
+    case "r": {
+      const reviewTransactionsButton = document.querySelector(
+        "div.task-card"
+      ) as HTMLElement | null;
+      reviewTransactionsButton?.click();
+      break;
+    }
     case "t": {
       const allButtons = document.querySelectorAll("button");
       const backToThisMonthButton = Array.from(allButtons).find((button) =>
@@ -37,6 +44,16 @@ document.addEventListener("keydown", function (event) {
       if (backToThisMonthButton) {
         backToThisMonthButton.click();
       }
+      break;
+    }
+    case "/": {
+      event.preventDefault(); // Don't actually type this key
+      const element = document.getElementById(
+        "search-transactions-input"
+      ) as HTMLInputElement | null;
+      element?.focus();
+      element?.select();
+      break;
     }
   }
 });
