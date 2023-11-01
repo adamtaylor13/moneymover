@@ -55,23 +55,33 @@ document.addEventListener("keydown", function (event) {
         "table.p-transactions-table i.x.icon"
       ) as HTMLElement | null;
       clearFilterButton?.click();
+
+      // First overload, attempt to close a modal if it's open.
+      const footerButtons = document.querySelectorAll(
+        "div.modal .modal-footer button"
+      );
+      const closeButton = Array.from(footerButtons).find((button) => {
+        const buttonText = button?.textContent?.toLowerCase();
+        return buttonText?.includes("close") || buttonText?.includes("cancel");
+      }) as HTMLElement | null;
+      closeButton?.click();
       break;
     }
     case "Tab": {
       const isShifted = event.shiftKey;
       event.preventDefault();
       const allSubNavs = document.querySelectorAll(
-          "div.secondary.menu a"
+        "div.secondary.menu a"
       ) as NodeListOf<HTMLElement>;
       const numSubNavs = allSubNavs.length;
       const activeSubNavIndex = Array.from(allSubNavs).findIndex((subNav) =>
-          subNav.classList.contains("active")
+        subNav.classList.contains("active")
       );
 
       const nextSubNav =
-          activeSubNavIndex + 1 > numSubNavs - 1 ? 0 : activeSubNavIndex + 1;
+        activeSubNavIndex + 1 > numSubNavs - 1 ? 0 : activeSubNavIndex + 1;
       const previousSubNav =
-          activeSubNavIndex - 1 < 0 ? numSubNavs - 1 : activeSubNavIndex - 1;
+        activeSubNavIndex - 1 < 0 ? numSubNavs - 1 : activeSubNavIndex - 1;
 
       allSubNavs[isShifted ? previousSubNav : nextSubNav]?.click();
       break;
