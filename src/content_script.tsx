@@ -55,6 +55,14 @@ document.addEventListener("keydown", function (event) {
       element?.select();
       break;
     }
+    // There's a good chance this will get very overloaded depending on the UI state.
+    case "Escape": {
+      const clearFilterButton = document.querySelector(
+        "table.p-transactions-table i.x.icon"
+      ) as HTMLElement | null;
+      clearFilterButton?.click();
+      break;
+    }
   }
 });
 
