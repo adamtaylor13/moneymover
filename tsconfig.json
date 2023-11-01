@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "module": "commonjs",
+        "target": "es6",
+        "esModuleInterop": true,
+        "sourceMap": false,
+        "rootDir": "src",
+        "outDir": "dist/js",
+        "noEmitOnError": true,
+        "jsx": "react",
+        "typeRoots": [ "node_modules/@types" ],
+        "lib": [
+            "es5", "es6", "dom", "dom.iterable"
+        ]
+    }
+}
