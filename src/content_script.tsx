@@ -10,7 +10,7 @@ document.addEventListener("keydown", function (event) {
     case "n": {
       const { year, month } = getCurrentYearAndMonthFromUrl();
       const element = document.querySelector(
-        `a[href^="${getNextMonthUrl(month, year)}"]`
+        `a[href*="${getNextMonthUrl(month, year)}"]`
       ) as HTMLElement | null;
       element?.click();
       break;
@@ -18,7 +18,7 @@ document.addEventListener("keydown", function (event) {
     case "p": {
       const { year, month } = getCurrentYearAndMonthFromUrl();
       const element = document.querySelector(
-        `a[href^="${getPreviousMonthUrl(month, year)}"]`
+        `a[href*="${getPreviousMonthUrl(month, year)}"]`
       ) as HTMLElement | null;
       element?.click();
       break;
