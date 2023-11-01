@@ -57,6 +57,25 @@ document.addEventListener("keydown", function (event) {
       clearFilterButton?.click();
       break;
     }
+    case "Tab": {
+      const isShifted = event.shiftKey;
+      event.preventDefault();
+      const allSubNavs = document.querySelectorAll(
+          "div.secondary.menu a"
+      ) as NodeListOf<HTMLElement>;
+      const numSubNavs = allSubNavs.length;
+      const activeSubNavIndex = Array.from(allSubNavs).findIndex((subNav) =>
+          subNav.classList.contains("active")
+      );
+
+      const nextSubNav =
+          activeSubNavIndex + 1 > numSubNavs - 1 ? 0 : activeSubNavIndex + 1;
+      const previousSubNav =
+          activeSubNavIndex - 1 < 0 ? numSubNavs - 1 : activeSubNavIndex - 1;
+
+      allSubNavs[isShifted ? previousSubNav : nextSubNav]?.click();
+      break;
+    }
   }
 });
 

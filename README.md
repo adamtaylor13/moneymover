@@ -19,6 +19,7 @@ Currently it only adds a few key-bindings:
 - "t": Go to "this" month
 - "/": Focus and select the "Quick Filter" input
 - "Escape": Will probably be very overloaded eventually, but for now just clears applied filters.
+- "Tab": Another key that will probably be overloaded, but for now just jumps between subnav menus (Hint: Use "+ Shift" to go backwards)
 
 At this point, all the keybindings are loosely based on Google Calendar's navigation keys.
 These keys should only trigger if the user is not focused on an input element.
