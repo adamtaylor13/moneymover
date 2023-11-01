@@ -1,7 +1,32 @@
 # MoneyMover: A Chrome Extension designed to give Lunch Money superpowers
 
+<img height="500" width="500" src="public/icon.png" />
+
+Why yes, this is a cheap DALL-E generated icon. 😬
+
+---
+
+## What does it do?
+
 MoneyMover is a Chrome extension that enhances the functionality of Lunch Money, a personal finance and budgeting tool. 
 The goal of MoneyMover is to make small QoL enhancements to the site.
+
+Currently it only adds a few key-bindings:
+
+- "n": Go to the "Next" month
+- "p": Go to the "Previous" month
+- "t": Go to "this" month
+
+At this point, all the keybindings are loosely based on Google Calendar's navigation keys.
+These keys should only trigger if the user is not focused on an input element.
+
+Future ideas:
+
+- Close modals with "Esc"
+- Save modals with "S"
+- More vim-like navigation
+- User options to enable/disable/remap as they like.
+- Chrome Extension Store? (maybe)
 
 ## Table of Contents
 - [Setup](#setup)
