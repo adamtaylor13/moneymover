@@ -1,21 +1,14 @@
 import { getNextMonthUrl, getPreviousMonthUrl } from "./utils/monthNavigation";
+import { getCurrentYearAndMonthFromUrl } from "./utils/getCurrentYearAndMonthFromUrl";
 
 document.addEventListener("keydown", function (event) {
   if (document.activeElement instanceof HTMLInputElement) {
     return;
   }
 
-  const url = new URL(window.location.href);
-  const pathParts = url.pathname.split("/");
-  const year = parseInt(pathParts[pathParts.length - 2]);
-  const month = parseInt(pathParts[pathParts.length - 1]);
-  if (isNaN(year) || isNaN(month)) {
-    console.error("Unable to parse year and month from url", url);
-    return;
-  }
-
   switch (event.key) {
     case "n": {
+      const { year, month } = getCurrentYearAndMonthFromUrl();
       const element = document.querySelector(
         `a[href="${getNextMonthUrl(month, year)}"]`
       ) as HTMLElement | null;
@@ -23,6 +16,7 @@ document.addEventListener("keydown", function (event) {
       break;
     }
     case "p": {
+      const { year, month } = getCurrentYearAndMonthFromUrl();
       const element = document.querySelector(
         `a[href="${getPreviousMonthUrl(month, year)}"]`
       ) as HTMLElement | null;
