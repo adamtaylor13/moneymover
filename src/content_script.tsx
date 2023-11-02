@@ -4,6 +4,10 @@ import { initializeMessageListener } from "@messages/init";
 initializeMessageListener();
 
 document.addEventListener("keydown", function (event) {
+  // In general, we probably don't want to run any of these functions
+  // when "ctrl" or "meta" (cmd on MacOS) is held down. Reason being is that
+  // these actually do things in the browser. So for example, Ctrl/Meta-R will
+  // refresh the page, and chances are that's _ALL_ the user intends for it to do.
   if (
     document.activeElement instanceof HTMLInputElement ||
     event.ctrlKey ||
