@@ -2,7 +2,11 @@ import { getNextMonthUrl, getPreviousMonthUrl } from "./utils/monthNavigation";
 import { getCurrentYearAndMonthFromUrl } from "./utils/getCurrentYearAndMonthFromUrl";
 
 document.addEventListener("keydown", function (event) {
-  if (document.activeElement instanceof HTMLInputElement) {
+  if (
+    document.activeElement instanceof HTMLInputElement ||
+    event.ctrlKey ||
+    event.metaKey
+  ) {
     return;
   }
 
