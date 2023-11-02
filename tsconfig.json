@@ -1,5 +1,8 @@
 {
     "compilerOptions": {
+        "paths": {
+            "@*": ["./src/*"]
+        },
         "strict": true,
         "module": "commonjs",
         "target": "es6",
@@ -13,5 +16,8 @@
         "lib": [
             "es5", "es6", "dom", "dom.iterable"
         ]
-    }
+    },
+    "include": [
+        "src/**/*"
+    ],
 }

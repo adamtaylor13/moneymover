@@ -11,8 +11,8 @@ module.exports = {
       content_script: path.join(srcDir, 'content_script.tsx'),
     },
     output: {
-        path: path.join(__dirname, "../dist/js"),
-        filename: "[name].js",
+        path: path.join(__dirname, "../dist"),
+        filename: "js/[name].js",
     },
     optimization: {
         splitChunks: {
@@ -29,6 +29,29 @@ module.exports = {
                 use: "ts-loader",
                 exclude: /node_modules/,
             },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                        },
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    require('tailwindcss'),
+                                    require('autoprefixer'),
+                                ],
+                            },
+                        },
+                    },
+                ],
+            },
         ],
     },
     resolve: {
@@ -39,5 +62,9 @@ module.exports = {
             patterns: [{ from: ".", to: "../", context: "public" }],
             options: {},
         }),
+        new webpack.HotModuleReplacementPlugin()
     ],
+    devServer: {
+        hot: true
+    }
 };
