@@ -18,31 +18,30 @@ document.addEventListener("keydown", function (event) {
 
   switch (event.key) {
     case "n": {
-      const [nextMonthButton] = getElementsForKey("n");
+      const nextMonthButton = getElementsForKey("n");
       nextMonthButton?.click();
       break;
     }
     case "p": {
-      const [previousMonthButton] = getElementsForKey("p");
+      const previousMonthButton = getElementsForKey("p");
       previousMonthButton?.click();
       break;
     }
     case "r": {
-      const [reviewTransactionsButton] = getElementsForKey("r");
+      const reviewTransactionsButton = getElementsForKey("r");
       reviewTransactionsButton?.click();
       break;
     }
     case "t": {
-      const [backToThisMonthButton] = getElementsForKey("t");
+      const backToThisMonthButton = getElementsForKey("t");
       backToThisMonthButton?.click();
       break;
     }
     case "/": {
       event.preventDefault(); // Don't actually type this key
-      const [quickFilterInput] = getElementsForKey("/");
+      const quickFilterInput = getElementsForKey("/");
       quickFilterInput?.focus();
-      // TODO: Instead of returning as arrays, let's just strongly type our inputs and outputs
-      (quickFilterInput as HTMLInputElement)?.select();
+      quickFilterInput?.select();
       break;
     }
     case "Escape": {
