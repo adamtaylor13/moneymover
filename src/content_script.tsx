@@ -46,7 +46,7 @@ document.addEventListener("keydown", function (event) {
       break;
     }
     case "Escape": {
-      const [clearFilterButton, closeModalButton] = getElementsForKey("/");
+      const [clearFilterButton, closeModalButton] = getElementsForKey("Escape");
       clearFilterButton?.click();
       closeModalButton?.click();
       break;
