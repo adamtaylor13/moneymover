@@ -90,13 +90,7 @@ export function getElementsForKey(key: Key): ElementsForKey[Key] {
   return null;
 }
 
-export function getElementsForUnknownKey(
-  key: string
-):
-  | ElementsForKey[Key]
-  | HTMLElement
-  | HTMLInputElement
-  | null
-  | [HTMLElement | null, HTMLElement | null] {
-  return getElementsForKey(key as any);
+export function getElementsForUnknownKey(key: string): (HTMLElement | null)[] {
+  const elements = getElementsForKey(key as any);
+  return Array.isArray(elements) ? elements : [elements];
 }

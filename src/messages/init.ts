@@ -12,10 +12,12 @@ export function initializeMessageListener() {
         unhighlightElement(msg.payload.key);
         break;
       case "CLICK_ELEMENT":
-        const elements = getElementsForUnknownKey(msg.payload.key);
+        const elements = getElementsForUnknownKey(msg.payload.key).filter(
+          Boolean
+        );
         // It could lead to strange behavior if we click on multiple elements
         // so we'll only click if there's exactly one element.
-        if (Array.isArray(elements) && elements.filter(Boolean).length === 1) {
+        if (elements.length === 1) {
           elements[0]?.click();
         }
         break;
