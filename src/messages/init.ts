@@ -1,6 +1,6 @@
 import { Message } from "@messages/types";
 import { highlightElement, unhighlightElement } from "@messages/messageActions";
-import { getElementsForKey } from "@utils/getElementForKey";
+import { getElementsForUnknownKey } from "@utils/getElementForKey";
 
 export function initializeMessageListener() {
   chrome.runtime.onMessage.addListener(function (msg: Message) {
@@ -12,10 +12,10 @@ export function initializeMessageListener() {
         unhighlightElement(msg.payload.key);
         break;
       case "CLICK_ELEMENT":
-        const elements = getElementsForKey(msg.payload.key).filter(Boolean);
+        const elements = getElementsForUnknownKey(msg.payload.key);
         // It could lead to strange behavior if we click on multiple elements
         // so we'll only click if there's exactly one element.
-        if (elements.length === 1) {
+        if (Array.isArray(elements) && elements.filter(Boolean).length === 1) {
           elements[0]?.click();
         }
         break;

@@ -20,8 +20,12 @@ export function getElementsForKey(key: "p"): HTMLElement | null;
 export function getElementsForKey(key: "r"): HTMLElement | null;
 export function getElementsForKey(key: "t"): HTMLElement | null;
 export function getElementsForKey(key: "/"): HTMLInputElement | null;
-export function getElementsForKey(key: "Escape"): [HTMLElement | null, HTMLElement | null];
-export function getElementsForKey(key: "Tab"): [HTMLElement | null, HTMLElement | null];
+export function getElementsForKey(
+  key: "Escape"
+): [HTMLElement | null, HTMLElement | null];
+export function getElementsForKey(
+  key: "Tab"
+): [HTMLElement | null, HTMLElement | null];
 export function getElementsForKey(key: Key): ElementsForKey[Key] {
   switch (key) {
     case "n": {
@@ -83,4 +87,16 @@ export function getElementsForKey(key: Key): ElementsForKey[Key] {
       return [previousNavElement, nextNavElement];
     }
   }
+  return null;
+}
+
+export function getElementsForUnknownKey(
+  key: string
+):
+  | ElementsForKey[Key]
+  | HTMLElement
+  | HTMLInputElement
+  | null
+  | [HTMLElement | null, HTMLElement | null] {
+  return getElementsForKey(key as any);
 }
