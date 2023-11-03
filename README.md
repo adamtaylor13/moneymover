@@ -8,7 +8,7 @@ Why yes, this is a cheap DALL-E generated icon. 😬
 
 ## What does it do?
 
-MoneyMover is a Chrome extension that enhances the functionality of Lunch Money, a personal finance and budgeting tool. 
+MoneyMover is a Chrome extension that enhances the functionality of Lunch Money, a personal finance and budgeting tool.
 The goal of MoneyMover is to make small QoL enhancements to the site.
 
 Currently it only adds a few key-bindings:
@@ -19,8 +19,8 @@ Currently it only adds a few key-bindings:
 - "t": Go to "this" month
 - "/": Focus and select the "Quick Filter" input
 - "Escape": Overloaded
-    - Clears applied filters (if any). It determines this on the presence of the "X Clear Filter" icon in any table.
-    - Closes a modal (if open). It determines this based on a modal being open with a "close" or "cancel" button.
+  - Clears applied filters (if any). It determines this on the presence of the "X Clear Filter" icon in any table.
+  - Closes a modal (if open). It determines this based on a modal being open with a "close" or "cancel" button.
 - "Tab": Jumps between subnav menus (Hint: Use "+ Shift" to go backwards)
 
 At this point, all the keybindings are loosely based on Google Calendar's navigation keys.
@@ -35,6 +35,7 @@ Future ideas:
 - Chrome Extension Store? (maybe)
 
 ## Table of Contents
+
 - [Setup](#setup)
 - [Build](#build)
 - [Build in Watch Mode](#build-in-watch-mode)
@@ -80,7 +81,9 @@ To run tests, use the following command:
 ```
 npx jest
 ```
+
 or
+
 ```
 npm run test
 ```
@@ -104,4 +107,3 @@ For any questions, please check our [FAQs](FAQ.md) or open an issue.
 - React
 - Jest
 - Webpack
-
