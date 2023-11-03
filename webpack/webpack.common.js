@@ -58,7 +58,7 @@ module.exports = {
   },
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: ".", to: "../", context: "public" }],
+      patterns: [{ from: ".", to: "../dist", context: "public" }],
       options: {},
     }),
     new webpack.HotModuleReplacementPlugin(),
