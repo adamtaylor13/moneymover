@@ -1,30 +1,35 @@
 import { getCurrentYearAndMonthFromUrl } from "./getCurrentYearAndMonthFromUrl";
 import { getNextMonthUrl, getPreviousMonthUrl } from "./monthNavigation";
 
+const query = (selector: string) =>
+  document.querySelector(selector) as HTMLElement | null;
+const queryAll = (selector: string) =>
+  document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
+
 export function getElementsForKey(key: string): (HTMLElement | null)[] {
   switch (key) {
     case "n": {
       const { year, month } = getCurrentYearAndMonthFromUrl();
-      const nextMonthButton = document.querySelector(
+      const nextMonthButton = query(
         `a[href*="${getNextMonthUrl(month, year)}"]`
-      ) as HTMLElement | null;
+      );
       return [nextMonthButton];
     }
     case "p": {
       const { year, month } = getCurrentYearAndMonthFromUrl();
-      const previousMonthButton = document.querySelector(
+      const previousMonthButton = query(
         `a[href*="${getPreviousMonthUrl(month, year)}"]`
-      ) as HTMLElement | null;
+      );
       return [previousMonthButton];
     }
     case "r": {
-      const reviewTransactionsButton = document.querySelector(
+      const reviewTransactionsButton = query(
         "div.task-card"
-      ) as HTMLElement | null;
+      );
       return [reviewTransactionsButton];
     }
     case "t": {
-      const allButtons = document.querySelectorAll("button");
+      const allButtons = queryAll("button");
       const thisMonthButton = Array.from(allButtons).find((button) =>
         button?.textContent?.includes("Back to this month")
       );
@@ -37,11 +42,11 @@ export function getElementsForKey(key: string): (HTMLElement | null)[] {
       return [quickFilterInput];
     }
     case "Escape": {
-      const clearFilterButton = document.querySelector(
+      const clearFilterButton = query(
         "table.p-transactions-table i.x.icon"
-      ) as HTMLElement | null;
+      );
 
-      const footerButtons = document.querySelectorAll(
+      const footerButtons = queryAll(
         "div.modal .modal-footer button"
       );
       const modalCloseButton = Array.from(footerButtons).find((button) => {
@@ -52,9 +57,9 @@ export function getElementsForKey(key: string): (HTMLElement | null)[] {
       return [clearFilterButton, modalCloseButton];
     }
     case "Tab": {
-      const allSubNavs = document.querySelectorAll(
+      const allSubNavs = queryAll(
         "div.secondary.menu a"
-      ) as NodeListOf<HTMLElement>;
+      );
       const numSubNavs = allSubNavs.length;
       const activeSubNavIndex = Array.from(allSubNavs).findIndex((subNav) =>
         subNav.classList.contains("active")
