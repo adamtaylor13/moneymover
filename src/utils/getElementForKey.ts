@@ -1,9 +1,10 @@
 import { getCurrentYearAndMonthFromUrl } from "./getCurrentYearAndMonthFromUrl";
 import { getNextMonthUrl, getPreviousMonthUrl } from "./monthNavigation";
 
-const query = (selector: string) =>
+// TODO: Refacotor into own file
+export const query = (selector: string) =>
   document.querySelector(selector) as HTMLElement | null;
-const queryAll = (selector: string) =>
+export const queryAll = (selector: string) =>
   document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
 
 type Key = "n" | "p" | "r" | "t" | "/" | "Escape" | "Tab";

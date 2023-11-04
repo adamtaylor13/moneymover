@@ -1,7 +1,10 @@
 import { getElementsForKey } from "@utils/getElementForKey";
 import { initializeMessageListener } from "@messages/init";
+import { Sequencer } from "@utils/Sequencer";
 
 initializeMessageListener();
+
+const seq = Sequencer();
 
 document.addEventListener("keydown", function (event) {
   // In general, we probably don't want to run any of these functions
@@ -16,6 +19,21 @@ document.addEventListener("keydown", function (event) {
     return;
   }
 
+  /**
+   * So far, all of our keys are one-shot keybindings. That means as soon as
+   * we press them, they activate. However, we'd like to get the full vim-like,
+   * modal editing experience. To do this, we need to figure out how to keep
+   * our one-shot keybindings, but also allow for sequential keybindings.
+   */
+  seq.add(event.key);
+  if (seq.isBuildingValidSequence()) {
+    if (seq.hasCompletedSequence()) {
+      seq.handleSequence();
+    }
+    return;
+  }
+
+  // else it's a one-shot keybinding
   switch (event.key) {
     case "n": {
       const nextMonthButton = getElementsForKey("n");
@@ -45,6 +63,7 @@ document.addEventListener("keydown", function (event) {
       break;
     }
     case "Escape": {
+      seq.reset(); // Escape will reset our sequence
       const [clearFilterButton, closeModalButton] = getElementsForKey("Escape");
       clearFilterButton?.click();
       closeModalButton?.click();
