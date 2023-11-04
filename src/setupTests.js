@@ -7,4 +7,12 @@ global.chrome = {
   },
 };
 
-global.document = {};
+global.document = {
+  addEventListener: jest.fn(),
+  querySelector: jest.fn(),
+  querySelectorAll: jest.fn(),
+};
+
+// This just fixes reference errors since we're not running in a browser
+global.HTMLElement = () => {};
+global.HTMLInputElement = () => {};
