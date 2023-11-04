@@ -4,7 +4,7 @@ import { Sequencer } from "@utils/Sequencer";
 
 initializeMessageListener();
 
-const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
+export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
   function (event: KeyboardEvent) {
     // In general, we probably don't want to run any of these functions
     // when "ctrl" or "meta" (cmd on MacOS) is held down. Reason being is that

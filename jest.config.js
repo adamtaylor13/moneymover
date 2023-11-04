@@ -5,4 +5,9 @@ module.exports = {
     "^.+\\.ts?$": "ts-jest",
   },
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
+  moduleNameMapper: {
+    "^@utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^@messages/(.*)$": "<rootDir>/src/messages/$1",
+  },
+  setupFilesAfterEnv: ["./src/setupTests.js"],
 };
