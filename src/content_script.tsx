@@ -100,7 +100,7 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
         break;
       }
       case ".": {
-        const backToThisMonthButton = getElementsForKey("t");
+        const backToThisMonthButton = getElementsForKey(".");
         backToThisMonthButton?.click();
         break;
       }
