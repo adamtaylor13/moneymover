@@ -1,6 +1,7 @@
 import { getElementsForKey } from "@utils/getElementForKey";
 import { initializeMessageListener } from "@messages/init";
 import { Sequencer } from "@utils/Sequencer";
+import "@styles/keyboard-shortcuts.css"
 
 initializeMessageListener();
 
@@ -34,6 +35,24 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
 
     // else it's a one-shot keybinding
     switch (event.key) {
+      case "j": {
+        const jButton = getElementsForKey("j");
+        break;
+      }
+      case "k": {
+        const kButton = getElementsForKey("k");
+        break;
+      }
+      case "c": {
+        const cButton = getElementsForKey("c");
+        cButton?.click();
+        break;
+      }
+      case "a": {
+        const aButton = getElementsForKey("a");
+        aButton?.click();
+        break;
+      }
       case "n": {
         const nextMonthButton = getElementsForKey("n");
         nextMonthButton?.click();
@@ -59,6 +78,11 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
         const quickFilterInput = getElementsForKey("/");
         quickFilterInput?.focus();
         quickFilterInput?.select();
+        break;
+      }
+      case "Enter": {
+        const EnterButton = getElementsForKey("Enter");
+        EnterButton?.click();
         break;
       }
       case "Escape": {
