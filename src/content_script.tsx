@@ -89,6 +89,11 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
         tButton?.click();
         break;
       }
+      case "y": {
+        const yButton = getElementsForKey("y");
+        yButton?.click();
+        break;
+      }
       case "<": {
         const backButton = getElementsForKey("<");
         backButton?.click();

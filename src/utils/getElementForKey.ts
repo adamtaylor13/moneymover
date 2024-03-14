@@ -13,7 +13,7 @@ function isUrlOneOf(url: string, allowedUrls: string[]) {
   return allowedUrls.some(pattern => url.match(pattern))
 }
 
-type Key = "j" | "k" | "c" | "a" | "n" | "p" | "x" | "m" | "r" | "t" | ">" | "<" | "." | "/" | "Enter" | "Escape" | "Tab";
+type Key = "j" | "k" | "c" | "a" | "n" | "p" | "x" | "m" | "r" | "t" | "y" | ">" | "<" | "." | "/" | "Enter" | "Escape" | "Tab";
 type ElementsForKey = {
   [K in Key]: K extends "/"
     ? HTMLInputElement | null
@@ -32,6 +32,7 @@ export function getElementsForKey(key: "x"): HTMLElement | null;
 export function getElementsForKey(key: "m"): HTMLElement | null;
 export function getElementsForKey(key: "r"): HTMLElement | null;
 export function getElementsForKey(key: "t"): HTMLElement | null;
+export function getElementsForKey(key: "y"): HTMLElement | null;
 export function getElementsForKey(key: ">"): HTMLElement | null;
 export function getElementsForKey(key: "<"): HTMLElement | null;
 export function getElementsForKey(key: "."): HTMLElement | null;
@@ -116,7 +117,7 @@ export function getElementsForKey(key: Key): ElementsForKey[Key]
       case "a": {
         const allButtons = queryAll("button");
         const notRecurringButton = allButtons.find((button) =>
-          button?.textContent?.includes("APPROVE THIS NEW RECURRING ITEM")
+          button?.textContent?.includes("Approve this new recurring item")
         );
         return notRecurringButton ? notRecurringButton : null;
       }
@@ -133,6 +134,13 @@ export function getElementsForKey(key: Key): ElementsForKey[Key]
           button?.textContent?.includes("not a recurring item")
         );
         return notRecurringButton ? notRecurringButton : null;
+      }
+      case "y": {
+        const allButtons = queryAll("button");
+        const yesButton = allButtons.find((button) =>
+          button?.textContent?.includes("Yes")
+        ) as HTMLElement | null;
+        return yesButton
       }
     }
   }
