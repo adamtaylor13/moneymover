@@ -178,7 +178,7 @@ export function getElementsForKey(key: Key): ElementsForKey[Key]
         return categoryButton;
       }
       case "r": {
-        const markReviewedButton = query("i.check.circle.icon");
+        const markReviewedButton = currentRow.querySelector("i.check.circle.icon") as HTMLElement | null;
         return markReviewedButton;
       }
       case "/": {
