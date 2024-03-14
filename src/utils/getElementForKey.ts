@@ -13,7 +13,7 @@ function isUrlOneOf(url: string, allowedUrls: string[]) {
   return allowedUrls.some(pattern => url.match(pattern))
 }
 
-type Key = "j" | "k" | "c" | "a" | "n" | "p" | "r" | "t" | "/" | "Enter" | "Escape" | "Tab";
+type Key = "j" | "k" | "c" | "a" | "n" | "p" | "x" | "m" | "r" | "t" | ">" | "<" | "." | "/" | "Enter" | "Escape" | "Tab";
 type ElementsForKey = {
   [K in Key]: K extends "/"
     ? HTMLInputElement | null
@@ -28,8 +28,13 @@ export function getElementsForKey(key: "c"): HTMLElement | null;
 export function getElementsForKey(key: "a"): HTMLElement | null;
 export function getElementsForKey(key: "n"): HTMLElement | null;
 export function getElementsForKey(key: "p"): HTMLElement | null;
+export function getElementsForKey(key: "x"): HTMLElement | null;
+export function getElementsForKey(key: "m"): HTMLElement | null;
 export function getElementsForKey(key: "r"): HTMLElement | null;
 export function getElementsForKey(key: "t"): HTMLElement | null;
+export function getElementsForKey(key: ">"): HTMLElement | null;
+export function getElementsForKey(key: "<"): HTMLElement | null;
+export function getElementsForKey(key: "."): HTMLElement | null;
 export function getElementsForKey(key: "/"): HTMLInputElement | null;
 export function getElementsForKey(key: "Enter"): HTMLElement | null;
 export function getElementsForKey(key: "Escape"): [HTMLElement | null, HTMLElement | null];
@@ -70,6 +75,33 @@ export function getElementsForKey(key: Key): ElementsForKey[Key]
         return firstItem;
       }
     } 
+      case "Escape": {
+        const clearFilterButton = query("table.p-transactions-table i.x.icon");
+
+        const footerButtons = queryAll("div.modal .modal-footer button");
+        const modalCloseButton = Array.from(footerButtons).find((button) => {
+          const buttonText = button?.textContent?.toLowerCase();
+          return buttonText?.includes("close") || buttonText?.includes("cancel");
+        }) as HTMLElement | null;
+
+        return [clearFilterButton, modalCloseButton];
+      }
+      case "Tab": {
+        const allSubNavs = queryAll("div.secondary.menu a");
+        const numSubNavs = allSubNavs.length;
+        const activeSubNavIndex = Array.from(allSubNavs).findIndex((subNav) =>
+          subNav.classList.contains("active")
+        );
+
+        const nextSubNavIndex =
+          activeSubNavIndex + 1 > numSubNavs - 1 ? 0 : activeSubNavIndex + 1;
+        const nextNavElement = allSubNavs[nextSubNavIndex];
+        const previousSubNavIndex =
+          activeSubNavIndex - 1 < 0 ? numSubNavs - 1 : activeSubNavIndex - 1;
+        const previousNavElement = allSubNavs[previousSubNavIndex];
+
+        return [previousNavElement, nextNavElement];
+      }
   }
 
   // Suggested Recurring shortcuts
@@ -109,53 +141,26 @@ export function getElementsForKey(key: Key): ElementsForKey[Key]
   if (isUrlOneOf(window.location.href, UrlsWithMonths))
   {
     switch (key) {
-      case "n": {
+      case ">": {
         const { year, month } = getCurrentYearAndMonthFromUrl();
         const nextMonthButton = query(
           `a[href*="${getNextMonthUrl(month, year)}"]`
         );
         return nextMonthButton;
       }
-      case "p": {
+      case "<": {
         const { year, month } = getCurrentYearAndMonthFromUrl();
         const previousMonthButton = query(
           `a[href*="${getPreviousMonthUrl(month, year)}"]`
         );
         return previousMonthButton;
       }
-      case "t": {
+      case ".": {
         const allButtons = queryAll("button");
         const thisMonthButton = Array.from(allButtons).find((button) =>
           button?.textContent?.includes("Back to this month")
         );
         return thisMonthButton || null;
-      }
-      case "Escape": {
-        const clearFilterButton = query("table.p-transactions-table i.x.icon");
-
-        const footerButtons = queryAll("div.modal .modal-footer button");
-        const modalCloseButton = Array.from(footerButtons).find((button) => {
-          const buttonText = button?.textContent?.toLowerCase();
-          return buttonText?.includes("close") || buttonText?.includes("cancel");
-        }) as HTMLElement | null;
-
-        return [clearFilterButton, modalCloseButton];
-      }
-      case "Tab": {
-        const allSubNavs = queryAll("div.secondary.menu a");
-        const numSubNavs = allSubNavs.length;
-        const activeSubNavIndex = Array.from(allSubNavs).findIndex((subNav) =>
-          subNav.classList.contains("active")
-        );
-
-        const nextSubNavIndex =
-          activeSubNavIndex + 1 > numSubNavs - 1 ? 0 : activeSubNavIndex + 1;
-        const nextNavElement = allSubNavs[nextSubNavIndex];
-        const previousSubNavIndex =
-          activeSubNavIndex - 1 < 0 ? numSubNavs - 1 : activeSubNavIndex - 1;
-        const previousNavElement = allSubNavs[previousSubNavIndex];
-
-        return [previousNavElement, nextNavElement];
       }
     }
   }
@@ -165,21 +170,54 @@ export function getElementsForKey(key: Key): ElementsForKey[Key]
   {
     const tableBody = document.querySelector("tbody");
     const currentRow = tableBody?.querySelector("tr.keyboardSelected");
-    if (currentRow == null)
-    {
-      return null;
-    }
     switch (key) {
       case "c": {
-        const categoryButton = currentRow.querySelectorAll("td.editable")[1].
-          querySelector("div")?.querySelector("div") as HTMLElement | null;
-        console.log("found category:")
-        console.log(categoryButton);
-        return categoryButton;
+        const categoryField = currentRow?.querySelectorAll("td.editable")[1].
+          querySelector("div")?.querySelector("div")?.querySelector("div") as HTMLElement | null;
+        return categoryField;
+      }
+      case "p": {
+        const payeeField = currentRow?.querySelectorAll("td.editable")[2].
+          querySelector("div")?.querySelector("div")?.querySelector("div") as HTMLElement | null;
+        return payeeField;
+      }
+      case "a": {
+        const amountField = currentRow?.querySelectorAll("td.clickable")[1] as HTMLElement | null;
+        return amountField;
+      }
+      case "x": {
+        const amountField = currentRow?.querySelectorAll("td.clickable")[0] as HTMLElement | null;
+        return amountField;
+      }
+      case "m": {
+        const allButtons = queryAll("button");
+        const markReviewedButton = allButtons.find((button) =>
+          button?.textContent?.includes("Mark Reviewed")
+        ) as HTMLElement | null;
+        return markReviewedButton;
+      }
+      case "n": {
+        const notesField = currentRow?.querySelectorAll("td.editable")[3].
+          querySelector("div")?.querySelector("div")?.querySelector("div") as HTMLElement | null;
+        return notesField;
+      }
+      case "t": {
+        const rowButtons = currentRow?.querySelectorAll("button");
+        if (rowButtons == null)
+        {
+          return null
+        }
+        const rowButtonsArray = Array.from(rowButtons);
+        const addTagButton = rowButtonsArray?.find((button) => button?.textContent?.includes("Add")) as HTMLElement | null;
+        return addTagButton;
       }
       case "r": {
-        const markReviewedButton = currentRow.querySelector("i.check.circle.icon") as HTMLElement | null;
+        const markReviewedButton = currentRow?.querySelector("i.check.circle.icon") as HTMLElement | null;
         return markReviewedButton;
+      }
+      case "Enter": {
+        const detailsButton = currentRow?.querySelector("i.angle.right.icon") as HTMLElement | null;
+        return detailsButton;
       }
       case "/": {
         const quickFilterInput = document.getElementById(

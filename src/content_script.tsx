@@ -37,13 +37,16 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
     switch (event.key) {
       case "j": {
         const jButton = getElementsForKey("j");
+        //don't click as j is used to change selection
         break;
       }
       case "k": {
         const kButton = getElementsForKey("k");
+        //don't click as k is used to change selection
         break;
       }
       case "c": {
+        event.preventDefault(); //prevent typing c in category field
         const cButton = getElementsForKey("c");
         cButton?.click();
         break;
@@ -54,21 +57,49 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
         break;
       }
       case "n": {
-        const nextMonthButton = getElementsForKey("n");
-        nextMonthButton?.click();
+        event.preventDefault(); //don't type n in notes field
+        const nButton = getElementsForKey("n");
+        nButton?.click();
         break;
       }
       case "p": {
-        const previousMonthButton = getElementsForKey("p");
-        previousMonthButton?.click();
+        event.preventDefault(); //don't type p in payee field
+        const pButton = getElementsForKey("p");
+        pButton?.click();
+        break;
+      }
+      case "x": {
+        const xButton = getElementsForKey("x");
+        xButton?.click();
+        break;
+      }
+      case "m": {
+        const mButton = getElementsForKey("m");
+        mButton?.click();
         break;
       }
       case "r": {
-        const reviewTransactionsButton = getElementsForKey("r");
-        reviewTransactionsButton?.click();
+        const rButton = getElementsForKey("r");
+        rButton?.click();
         break;
       }
       case "t": {
+        event.preventDefault(); //don't type t in tags field
+        const tButton = getElementsForKey("t");
+        tButton?.click();
+        break;
+      }
+      case "<": {
+        const backButton = getElementsForKey("<");
+        backButton?.click();
+        break;
+      }
+      case ">": {
+        const forwardButton = getElementsForKey(">");
+        forwardButton?.click();
+        break;
+      }
+      case ".": {
         const backToThisMonthButton = getElementsForKey("t");
         backToThisMonthButton?.click();
         break;
