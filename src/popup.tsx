@@ -160,10 +160,6 @@ const recurringKeybindings = [
 const Popup = () => {
   return (
     <div className={"w-[575px] rounded-md shadow-md p-8 text-md"}>
-      <p className={"text-sm italic"}>
-        MoneyMover: A Chrome Extension designed to give Lunch Money superpowers
-      </p>
-
       <div className={"my-8"}>
         <p className={"font-bold"}>What does it do?</p>
         <p>
@@ -282,13 +278,6 @@ const Popup = () => {
           ))}
         </ul>
       </div>
-
-
-      <p className={"mt-4"}>
-        At this point, all the keybindings are loosely based on Google
-        Calendar's navigation keys. These keys should only trigger if the user
-        is not focused on an input element.
-      </p>
     </div>
   );
 };
