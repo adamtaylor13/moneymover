@@ -9,10 +9,6 @@ export const queryAll = (selector: string) =>
 
 const UrlsWithMonths = [".*\/(transactions|budget|recurring|calendar)\/\d*"];
 
-function isUrlOneOf(url: string, allowedUrls: string[]) {
-  return allowedUrls.some(pattern => url.match(pattern))
-}
-
 type Key = "j" | "k" | "c" | "a" | "n" | "p" | "x" | "m" | "r" | "t" | "y" | ">" | "<" | "." | "/" | "Enter" | "Escape" | "Tab";
 type ElementsForKey = {
   [K in Key]: K extends "/"
@@ -21,6 +17,45 @@ type ElementsForKey = {
     ? [HTMLElement | null, HTMLElement | null]
     : HTMLElement | null;
 };
+
+// Global to preserve active row after editing a cell in it via keyboard
+let lastActiveRowIndex = ""
+
+function isUrlOneOf(url: string, allowedUrls: string[]) {
+  return allowedUrls.some(pattern => url.match(pattern))
+}
+
+function getFirstNonPendingRow(tableBody: HTMLTableSectionElement | null, goingUp: boolean): HTMLTableRowElement | null {
+  if (!tableBody) {
+    return null;
+  }
+  let firstItem: Element | null = tableBody?.querySelector("tr");
+  if (firstItem && firstItem.tagName === 'TR' && !firstItem.classList.contains('transaction-row')) {
+    // This is the "Show/Hide pending transactions" row, skip it
+    firstItem = goingUp ? firstItem.previousElementSibling : firstItem.nextElementSibling;
+  }
+  return firstItem as HTMLTableRowElement | null;
+}
+
+function getNextNonPendingRow(currentRow: Element | null, goingUp: boolean): HTMLTableRowElement | null {
+  if (!currentRow) {
+    return null;
+  }
+
+  let row: Element | null = goingUp ? currentRow.previousElementSibling : currentRow.nextElementSibling;  
+  while (row && row.tagName === 'TR' && !row.classList.contains('transaction-row')) {
+    // This is the "Show/Hide pending transactions" row, skip it
+    row = goingUp ? row.previousElementSibling : row.nextElementSibling;
+  }
+  return row as HTMLTableRowElement | null;
+}
+
+function setNewRowAsCurrent(newRow: HTMLTableRowElement | null, previous: HTMLTableRowElement | null) {
+  previous?.classList.remove('keyboardSelected');
+  newRow?.classList.add('keyboardSelected');
+  newRow?.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scroll the next item into view
+  lastActiveRowIndex = (newRow?.rowIndex.toString() || "");
+}
 
 export function getElementsForKey(key: "j"): HTMLElement | null;
 export function getElementsForKey(key: "k"): HTMLElement | null;
@@ -46,63 +81,63 @@ export function getElementsForKey(key: Key): ElementsForKey[Key]
   switch (key) {
     case "j": {
       const tableBody = document.querySelector("tbody");
-      const currentItem = tableBody?.querySelector("tr.keyboardSelected");
+      const currentItem = tableBody?.querySelector("tr.keyboardSelected") as HTMLTableRowElement;
       if (currentItem) {
-        const nextItem = currentItem.nextElementSibling as HTMLElement | null;
-        currentItem.classList.remove('keyboardSelected');
-        nextItem?.classList.add('keyboardSelected');
+        const nextItem = getNextNonPendingRow(currentItem, false)
+        setNewRowAsCurrent(nextItem, currentItem)
         return nextItem;
       }
       else {
-        const firstItem = tableBody?.querySelector("tr") as HTMLElement | null;
-        firstItem?.classList.add('keyboardSelected');
+        const firstItem = getFirstNonPendingRow(tableBody, false)
+        setNewRowAsCurrent(firstItem, null)
         return firstItem;
       }
     }
     case "k": {
       const tableBody = document.querySelector("tbody");
-      const currentItem = tableBody?.querySelector("tr.keyboardSelected");
+      const currentItem = tableBody?.querySelector("tr.keyboardSelected") as HTMLTableRowElement;
       if (currentItem) {
-        const prevItem = currentItem.previousElementSibling as HTMLElement | null;
+        const prevItem = getNextNonPendingRow(currentItem, true)
         if (prevItem) {
-          currentItem.classList.remove("keyboardSelected");
-          prevItem.classList.add("keyboardSelected");
+          setNewRowAsCurrent(prevItem, currentItem)
           return prevItem;
+        } else {
+          return currentItem as HTMLElement | null;
         }
       }
       else {
-        const firstItem = tableBody?.querySelector("tr") as HTMLElement | null;
-        firstItem?.classList.add("keyboardSelected");
+        const firstItem = getFirstNonPendingRow(tableBody, false)
+        setNewRowAsCurrent(firstItem, null)
         return firstItem;
       }
     } 
-      case "Escape": {
-        const clearFilterButton = query("table.p-transactions-table i.x.icon");
+    case "Escape": {
+      const clearFilterButton = query("table.p-transactions-table i.x.icon");
 
-        const footerButtons = queryAll("div.modal .modal-footer button");
-        const modalCloseButton = Array.from(footerButtons).find((button) => {
-          const buttonText = button?.textContent?.toLowerCase();
-          return buttonText?.includes("close") || buttonText?.includes("cancel");
-        }) as HTMLElement | null;
+      const footerButtons = queryAll("div.modal .modal-footer button");
+      const modalCloseButton = Array.from(footerButtons).find((button) => {
+        const buttonText = button?.textContent?.toLowerCase();
+        return buttonText?.includes("close") || buttonText?.includes("cancel");
+      }) as HTMLElement | null;
 
-        return [clearFilterButton, modalCloseButton];
-      }
-      case "Tab": {
-        const allSubNavs = queryAll("div.secondary.menu a");
-        const numSubNavs = allSubNavs.length;
-        const activeSubNavIndex = Array.from(allSubNavs).findIndex((subNav) =>
-          subNav.classList.contains("active")
-        );
+      return [clearFilterButton, modalCloseButton];
+    }
+    case "Tab": {
+      const allSubNavs = queryAll("div.secondary.menu a");
+      const numSubNavs = allSubNavs.length;
+      const activeSubNavIndex = Array.from(allSubNavs).findIndex((subNav) =>
+        subNav.classList.contains("active")
+      );
 
-        const nextSubNavIndex =
-          activeSubNavIndex + 1 > numSubNavs - 1 ? 0 : activeSubNavIndex + 1;
-        const nextNavElement = allSubNavs[nextSubNavIndex];
-        const previousSubNavIndex =
-          activeSubNavIndex - 1 < 0 ? numSubNavs - 1 : activeSubNavIndex - 1;
-        const previousNavElement = allSubNavs[previousSubNavIndex];
+      const nextSubNavIndex =
+        activeSubNavIndex + 1 > numSubNavs - 1 ? 0 : activeSubNavIndex + 1;
+      const nextNavElement = allSubNavs[nextSubNavIndex];
+      const previousSubNavIndex =
+        activeSubNavIndex - 1 < 0 ? numSubNavs - 1 : activeSubNavIndex - 1;
+      const previousNavElement = allSubNavs[previousSubNavIndex];
 
-        return [previousNavElement, nextNavElement];
-      }
+      return [previousNavElement, nextNavElement];
+    }
   }
 
   // Suggested Recurring shortcuts
@@ -242,4 +277,28 @@ export function getElementsForKey(key: Key): ElementsForKey[Key]
 export function getElementsForUnknownKey(key: string): (HTMLElement | null)[] {
   const elements = getElementsForKey(key as any);
   return Array.isArray(elements) ? elements : [elements];
+}
+
+
+// Function to reset the Transaction Keyboard Selection
+export function resetTransactionKeyboardSelection() {
+  lastActiveRowIndex = "";
+}
+
+// Function to restore the last active row from after Transaction table update
+export function restoreTransactionKeyboardSelection() {
+  if (lastActiveRowIndex !== "") {
+    const rowIndex = parseInt(lastActiveRowIndex);
+    if (!isNaN(rowIndex)) {
+      // Query the table body for the row element at the saved rowIndex
+      const querySelector = `tbody tr:nth-child(${rowIndex})`;
+      const rowElement = document.querySelector(querySelector);
+
+      // Set that current row ad Keyboard Selected and ensure it is in view
+      if (rowElement) {
+        rowElement.classList.add('keyboardSelected');
+        rowElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }
 }

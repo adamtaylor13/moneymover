@@ -1,4 +1,8 @@
 import { getElementsForKey } from "@utils/getElementForKey";
+import { 
+  resetTransactionKeyboardSelection, 
+  restoreTransactionKeyboardSelection 
+} from "@utils/getElementForKey";
 import { initializeMessageListener } from "@messages/init";
 import { Sequencer } from "@utils/Sequencer";
 import "@styles/keyboard-shortcuts.css"
@@ -118,7 +122,10 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
       }
       case "Enter": {
         const EnterButton = getElementsForKey("Enter");
-        EnterButton?.click();
+        if (EnterButton instanceof HTMLButtonElement) {
+          //else don't click as active row was re-selected
+          EnterButton?.click();
+        }
         break;
       }
       case "Escape": {
@@ -146,4 +153,83 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
 
 const sequencer = Sequencer();
 document.addEventListener("keydown", keyDownEventListener(sequencer));
+
+// Going through hoops here to update the Keyboard Shortcuts selected
+// Transaction whenever the Transaction Table is re-rendered
+
+// Mutation Observer will restore the keyboard selection after re-render
+const mutationCallback = (mutationsList: MutationRecord[]) => {
+  for (const mutation of mutationsList) {
+    if ((mutation.type === 'childList') || (mutation.type === 'attributes')) {
+      const target = mutation.target;
+      if (target.nodeType === Node.ELEMENT_NODE) { 
+        const targetElement = target as Element; 
+        // If a transaction just got updated, restore the last active Keyboard Selection
+        if (targetElement.classList.contains('transaction-row') && 
+          (targetElement.classList.contains('cleared') || targetElement.classList.contains('uncleared')) && 
+          !targetElement.classList.contains('keyboardSelected')) {
+          restoreTransactionKeyboardSelection();
+        }
+      }
+    }
+  }
+};
+
+let observer = new MutationObserver(mutationCallback);
+let transactionTable: HTMLElement | null
+const config = { attributes: true, childList: true, subtree: true};
+
+// Function to enable the mutation monitor when Transaction Table is detectedd
+function monitorTransactionTable() {
+  // Called when the transactions page is loaded or updated.
+  // Since it can take time for the transactions table to load,
+  // wait for a bit and then if it is found monitor it for changes so that 
+  // the keyboard selected transaction persists across changes
+  setTimeout(() => {
+    transactionTable = document.querySelector('.p-transactions-table');
+    if (transactionTable) {
+      console.log("[MoneyMover] Keyboard Shortcuts enabled for transaction table.")
+      //transactionTable = document.getElementById('.p-transactions-table');
+      observer.observe(transactionTable, config);
+    } else {
+      console.log("[MoneyMover] Couldn't find transaction table for Keyboard Shortcuts.")
+    }
+  }, 3000); // Adjust the delay as needed
+}
+
+
+// Check for Transaction Table on an initial page load
+window.addEventListener('load', () => {
+  // Check if the transaction page is being loaded and set up a listener
+  // to monitor changes in the Transaction table
+  const currentUrl = window.location.href;  
+  if (currentUrl.includes("transactions")) {
+    onTransPage = true;
+    monitorTransactionTable()
+  } else {
+    onTransPage = false;
+  }
+});
+
+// Unfortunately, the only way I was able to consistently check for the
+// presence of the transaction table was to periodically check the current URL
+// when a lunchmoney tab is active
+let lastUrl = location.href; 
+let onTransPage = false;
+setInterval(() => {
+  const currentUrl = location.href;
+  if (currentUrl !== lastUrl) {
+    lastUrl = currentUrl; 
+    if (!onTransPage && currentUrl.includes("transactions")) {
+      onTransPage = true;
+      monitorTransactionTable()
+    } else if (onTransPage && (!currentUrl.includes("transactions"))) {
+      console.log("[Money Mover]Disconnecting Transactions Table monitor")
+      onTransPage = false;
+      resetTransactionKeyboardSelection()
+      observer.disconnect()
+    }
+  }
+}, 1000); // Check every 1000 milliseconds (1 second) - yes it's kludgy...
+
 console.log("🪄 MoneyMover intialized.");
