@@ -48,6 +48,7 @@ function getCurrentRow() {
 }
 
 export const TransactionTable = {
+  setNewRowAsCurrent,
   noSelectedRow() {
     return lastActiveRowIndex === "";
   },

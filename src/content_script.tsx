@@ -137,6 +137,7 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
           getElementsForKey("Escape");
         clearFilterButton?.click();
         closeModalButton?.click();
+        TransactionTable.setNewRowAsCurrent(null);
         break;
       }
       case "Tab": {
