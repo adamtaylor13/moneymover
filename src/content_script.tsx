@@ -37,11 +37,19 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
     // else it's a one-shot keybinding
     switch (event.key) {
       case "j": {
-        TransactionTable.getNextNonPendingRow();
+        if (TransactionTable.noSelectedRow()) {
+          TransactionTable.getFirstNonPendingRow();
+        } else {
+          TransactionTable.getNextNonPendingRow();
+        }
         break;
       }
       case "k": {
-        TransactionTable.getPrevNonPendingRow();
+        if (TransactionTable.noSelectedRow()) {
+          TransactionTable.getFirstNonPendingRow();
+        } else {
+          TransactionTable.getPrevNonPendingRow();
+        }
         break;
       }
       case "c": {
