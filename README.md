@@ -59,6 +59,11 @@ Future ideas:
 - User options to enable/disable/remap as they like.
 - Chrome Extension Store? (maybe)
 
+## A Note for Vimium users
+Many MoneyMover keyboard shortcuts are inspired by [Vim](https://www.vim.org/) and keyboard navigation fanatics may also have the [Vimium - The Hacker's Browser](https://vimium.github.io/) installed as well.
+
+MoneyMover overrides some of the default shortcuts for Vimium, so if you have both plugins installed please add ":https://my.lunchmoney.app/" to the list of Excluded URLs on the Vimium Plugin Options page.
+
 ## Table of Contents
 
 - [Setup](#setup)
