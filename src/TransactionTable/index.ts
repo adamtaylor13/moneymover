@@ -48,7 +48,6 @@ function getCurrentRow() {
 }
 
 export const TransactionTable = {
-  setNewRowAsCurrent,
   getFirstNonPendingRow,
   getNextNonPendingRow() {
     const currentRow = getCurrentRow();
