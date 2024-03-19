@@ -1,8 +1,9 @@
 import { getElementsForKey } from "@utils/getElementForKey";
 import { initializeMessageListener } from "@messages/init";
 import { Sequencer } from "@utils/Sequencer";
-import "@styles/keyboard-shortcuts.css";
 import { TransactionTable } from "@TransactionTable";
+
+import "@styles/keyboard-shortcuts.css";
 
 initializeMessageListener();
 
