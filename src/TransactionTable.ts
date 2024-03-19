@@ -19,7 +19,7 @@ function setNewRowAsCurrent(newRow: HTMLTableRowElement | null) {
   lastActiveRowIndex = newRow?.rowIndex.toString() || "";
 }
 
-function getFirstNonPendingRow(): HTMLTableRowElement | null {
+function selectFirstRow(): HTMLTableRowElement | null {
   const tableBody = document.querySelector("tbody");
   if (!tableBody) {
     return null;
@@ -37,7 +37,7 @@ function getCurrentRow() {
     .querySelector("tbody")
     ?.querySelector("tr.keyboardSelected");
   if (!currentRow) {
-    currentRow = getFirstNonPendingRow();
+    currentRow = selectFirstRow();
   }
   if (!currentRow) {
     console.warn("Could not find any transaction rows in the table");
@@ -52,8 +52,8 @@ export const TransactionTable = {
   noSelectedRow() {
     return lastActiveRowIndex === "";
   },
-  getFirstNonPendingRow,
-  getNextNonPendingRow() {
+  selectFirstRow,
+  selectNextRow() {
     const currentRow = getCurrentRow();
     let row = currentRow?.nextElementSibling;
     while (isSkippableRow(row)) {
@@ -61,7 +61,7 @@ export const TransactionTable = {
     }
     setNewRowAsCurrent(row as HTMLTableRowElement | null);
   },
-  getPrevNonPendingRow() {
+  selectPrevRow() {
     const currentRow = getCurrentRow();
     let row = currentRow?.previousElementSibling;
     while (isSkippableRow(row)) {

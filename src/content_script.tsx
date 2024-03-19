@@ -39,17 +39,17 @@ export const keyDownEventListener = (seq: ReturnType<typeof Sequencer>) =>
     switch (event.key) {
       case "j": {
         if (TransactionTable.noSelectedRow()) {
-          TransactionTable.getFirstNonPendingRow();
+          TransactionTable.selectFirstRow();
         } else {
-          TransactionTable.getNextNonPendingRow();
+          TransactionTable.selectNextRow();
         }
         break;
       }
       case "k": {
         if (TransactionTable.noSelectedRow()) {
-          TransactionTable.getFirstNonPendingRow();
+          TransactionTable.selectFirstRow();
         } else {
-          TransactionTable.getPrevNonPendingRow();
+          TransactionTable.selectPrevRow();
         }
         break;
       }

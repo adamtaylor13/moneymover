@@ -37,7 +37,7 @@ export function Sequencer() {
           break;
         }
         case "gg": {
-          TransactionTable.getFirstNonPendingRow();
+          TransactionTable.selectFirstRow();
           break;
         }
       }
