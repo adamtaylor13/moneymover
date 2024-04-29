@@ -41,7 +41,7 @@ Note: when using j/k navigation a bar appears to the left of the selected row. T
 - "Enter": Open details pane for current row
 - "/": Focus and select the "Quick Filter" input
 
-Note: some of these shortcuts may be fragile, particulraly for non-imported rows. This is because it relies on some attributes of the table, which may change.
+Note: some of these shortcuts may be fragile, particularly for non-imported rows. This is because it relies on some attributes of the table, which may change.
 
 ### /recurring/suggested
 - "Enter": Open details pane for current row
