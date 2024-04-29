@@ -1,8 +1,9 @@
 import { getElementsForSequence } from "@utils/getElementsForSequence";
+import { TransactionTable } from "@TransactionTable";
 
 export function Sequencer() {
   let sequence = "";
-  const validSequences = ["gb", "gt"];
+  const validSequences = ["gb", "gt", "gg"];
   return {
     add: function (key: string) {
       sequence += key;
@@ -33,6 +34,10 @@ export function Sequencer() {
         case "gt": {
           const budgetLink = getElementsForSequence("gt");
           budgetLink?.click();
+          break;
+        }
+        case "gg": {
+          TransactionTable.selectFirstRow();
           break;
         }
       }

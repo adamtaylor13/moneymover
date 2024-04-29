@@ -1,0 +1,13 @@
+.keyboardSelected {
+  position: relative;
+}
+
+.keyboardSelected::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px; /* Adjust the width as needed */
+  height: 100%; /* Full height of the <tr> element */
+  background-color: #fbb700; /* LunchMoney Yellow */
+}

@@ -41,20 +41,24 @@ function clickElement(key: string) {
 
 const keybindings = [
   {
-    key: "n",
+    key: ">",
     description: "Go to the 'Next' month",
   },
   {
-    key: "p",
+    key: "<",
     description: "Go to the 'Previous' month",
   },
   {
-    key: "r",
-    description: "Click 'Review Transactions' button",
+    key: ".",
+    description: "Go to 'this' month",
   },
   {
-    key: "t",
-    description: "Go to 'this' month",
+    key: "j",
+    description: "Move down a row in a table",
+  },
+  {
+    key: "k",
+    description: "Move up a row in a table",
   },
   {
     key: "/",
@@ -82,13 +86,80 @@ const keybindings = [
   },
 ];
 
+const transactionKeybindings = [
+  {
+    key: "x",
+    description: "Select transaction for bulk edit",
+  },
+  {
+    key: "c",
+    description: "Change 'Category'",
+  },
+  {
+    key: "p",
+    description: "Change 'Payee'",
+  },
+  {
+    key: "a",
+    description: "Change 'Amount'",
+  },
+  {
+    key: "n",
+    description: "Change 'Notes'",
+  },
+  {
+    key: "t",
+    description: "Add Tag",
+  },
+  {
+    key: "r",
+    description: "Mark/Unmark current transaction reviewed",
+  },
+  {
+    key: "m",
+    description: "Mark selected transactions reviewed",
+  },
+  {
+    key: "Enter",
+    description: "Open details pane for selected transaction",
+  },
+  {
+    key: "/",
+    description: "Quick Filter",
+  },
+]
+
+const recurringKeybindings = [
+  {
+    key: "Enter",
+    description: "Open details pane for current row",
+  },
+  {
+    key: "n",
+    description:
+      "This key is 'Overloaded' meaning it works differently depending on the UI state",
+    overloads: [
+      {
+        description: "'No' button if Create rule dialog box is open.",
+      },
+      {
+        description: "'This is not a recurring item' if details pane is open."
+      },
+    ],    
+  },
+  {
+    key: "y",
+    description: "'Yes' button if Create rule dialog box is open.",
+  },
+  {
+    key: "a",
+    description: "'Approve this new recurring item' if details pane is open",
+  },
+]
+
 const Popup = () => {
   return (
     <div className={"w-[575px] rounded-md shadow-md p-8 text-md"}>
-      <p className={"text-sm italic"}>
-        MoneyMover: A Chrome Extension designed to give Lunch Money superpowers
-      </p>
-
       <div className={"my-8"}>
         <p className={"font-bold"}>What does it do?</p>
         <p>
@@ -99,7 +170,7 @@ const Popup = () => {
       </div>
 
       <div className="my-8">
-        <p className={"font-semibold text-2xl mb-4"}>Key Bindings:</p>
+        <p className={"font-semibold text-2xl mb-4"}>Global Key Bindings:</p>
         <ul className={"ml-4 list-disc"}>
           {keybindings.map((binding, i) => (
             <li
@@ -136,11 +207,77 @@ const Popup = () => {
           ))}
         </ul>
       </div>
-      <p className={"mt-4"}>
-        At this point, all the keybindings are loosely based on Google
-        Calendar's navigation keys. These keys should only trigger if the user
-        is not focused on an input element.
-      </p>
+
+      <div className="my-8">
+        <p className={"font-semibold text-2xl mb-4"}>Transactions Page:</p>
+        <ul className={"ml-4 list-disc"}>
+          {transactionKeybindings.map((binding, i) => (
+            <li
+              className={"hover:cursor-help"}
+              key={i}
+              onMouseEnter={() => {
+                highlightElement(binding.key);
+              }}
+              onMouseLeave={() => {
+                unhighlightElement(binding.key);
+              }}
+              onClick={() => {
+                clickElement(binding.key);
+              }}
+            >
+              <div className={"mb-2"}>
+                <span
+                  className={
+                    "font-semibold p-1 bg-gray-100 rounded-md border border-stone-200 min-w-[20px] inline-flex justify-center"
+                  }
+                >
+                  {binding.key}
+                </span>
+                <span className={"ml-3"}>{binding.description}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="my-8">
+        <p className={"font-semibold text-2xl mb-4"}>Recurring Page:</p>
+        <ul className={"ml-4 list-disc"}>
+          {recurringKeybindings.map((binding, i) => (
+            <li
+              className={"hover:cursor-help"}
+              key={i}
+              onMouseEnter={() => {
+                highlightElement(binding.key);
+              }}
+              onMouseLeave={() => {
+                unhighlightElement(binding.key);
+              }}
+              onClick={() => {
+                clickElement(binding.key);
+              }}
+            >
+              <div className={"mb-2"}>
+                <span
+                  className={
+                    "font-semibold p-1 bg-gray-100 rounded-md border border-stone-200 min-w-[20px] inline-flex justify-center"
+                  }
+                >
+                  {binding.key}
+                </span>
+                <span className={"ml-3"}>{binding.description}</span>
+              </div>
+              {binding.overloads && (
+                <ul className={"ml-4 list-disc"}>
+                  {binding.overloads.map((overload, i) => (
+                    <li key={i}>{overload.description}</li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

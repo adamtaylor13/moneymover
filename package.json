@@ -1,6 +1,6 @@
 {
   "name": "MoneyMover",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Chrome extension designed to give superpowers to Lunch Money",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "autoprefixer": "^10.4.0",
+    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.8.1",
     "glob": "^7.1.6",

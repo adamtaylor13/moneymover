@@ -11,19 +11,44 @@ Why yes, this is a cheap DALL-E generated icon. 😬
 MoneyMover is a Chrome extension that enhances the functionality of Lunch Money, a personal finance and budgeting tool.
 The goal of MoneyMover is to make small QoL enhancements to the site.
 
-Currently it only adds a few key-bindings:
+Currently it only adds a few key-bindings in different pages:
 
-- "n": Go to the "Next" month
-- "p": Go to the "Previous" month
-- "r": Click "Review Transactions" button
-- "t": Go to "this" month
-- "/": Focus and select the "Quick Filter" input
+### URL Unrestricted keybindings:
+- "j": Select next item in table
+- "k": Select previous item in table
 - "Escape": Overloaded
   - Clears applied filters (if any). It determines this on the presence of the "X Clear Filter" icon in any table.
   - Closes a modal (if open). It determines this based on a modal being open with a "close" or "cancel" button.
 - "Tab": Jumps between subnav menus (Hint: Use "+ Shift" to go backwards)
 
-At this point, all the keybindings are loosely based on Google Calendar's navigation keys.
+Note: when using j/k navigation a bar appears to the left of the selected row. This will currently cause a blank column to appear to the right of all other columns in the table. This does not affect functionality, but is a visual bug. This will likely need changes from Jen to support a small column to the left in all tables that the blue indicator can occupy.
+
+### Pages with Calendars:
+
+- "<": Go to the "Next" month
+- ">": Go to the "Previous" month
+- ".": Go to "this" month
+
+### /transactions/{date}
+- "x": Select row
+- "c": Focus category for current row
+- "p": Focus payee for current row
+- "a": Focus amount for current row (note that for imported transactions this will open the details pane)
+- "n": Focus notes for current row
+- "t": Add tag for current row
+- "r": Mark/unmark current row reviewed
+- "m": Mark selected rows reviewed
+- "Enter": Open details pane for current row
+- "/": Focus and select the "Quick Filter" input
+
+Note: some of these shortcuts may be fragile, particularly for non-imported rows. This is because it relies on some attributes of the table, which may change.
+
+### /recurring/suggested
+- "Enter": Open details pane for current row
+- "n": Conditional: "No" button if Create rule dialog box is open, else "This is not a recurring item" if details pane is open.
+- "y": "Yes" button if Create rule dialog box is open
+- "a": "Approve this new recurring item" if details pane is open
+
 These keys should only trigger if the user is not focused on an input element.
 
 Future ideas:
@@ -33,6 +58,11 @@ Future ideas:
 - More vim-like navigation
 - User options to enable/disable/remap as they like.
 - Chrome Extension Store? (maybe)
+
+## A Note for Vimium users
+Many MoneyMover keyboard shortcuts are inspired by [Vim](https://www.vim.org/) and keyboard navigation fanatics may also have the [Vimium - The Hacker's Browser](https://vimium.github.io/) installed as well.
+
+MoneyMover overrides some of the default shortcuts for Vimium, so if you have both plugins installed please add ":https://my.lunchmoney.app/" to the list of Excluded URLs on the Vimium Plugin Options page.
 
 ## Table of Contents
 
