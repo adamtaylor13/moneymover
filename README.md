@@ -21,7 +21,7 @@ Currently it only adds a few key-bindings in different pages:
   - Closes a modal (if open). It determines this based on a modal being open with a "close" or "cancel" button.
 - "Tab": Jumps between subnav menus (Hint: Use "+ Shift" to go backwards)
 
-Note: when using j/k navigation a blue bar appears to the left of the selected row. This will currently cause a blank column to appear to the right of all other columns in the table. This does not affect functionality, but is a visual bug. This will likely need changes from Jen to support a small column to the left in all tables that the blue indicator can occupy.
+Note: when using j/k navigation a bar appears to the left of the selected row. This will currently cause a blank column to appear to the right of all other columns in the table. This does not affect functionality, but is a visual bug. This will likely need changes from Jen to support a small column to the left in all tables that the blue indicator can occupy.
 
 ### Pages with Calendars:
 
