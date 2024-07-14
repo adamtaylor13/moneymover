@@ -18,7 +18,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.lunchmoney.app/*"],
+      "matches": ["https://my.lunchmoney.app/*", "https://beta.lunchmoney.app/*"],
       "js": ["js/vendor.js", "js/content_script.js"]
     }
   ],
